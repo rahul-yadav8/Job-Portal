@@ -1,0 +1,24 @@
+.appointmentbtn {
+  height: 50px;
+  width: 100px;
+  background-color: transparent;
+  color: black;
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+
+.dark .appointmentbtn {
+  color: white;
+  border-color: white;
+}
+
+.activebtn {
+  background-color: #7a58e7;
+  color: #ffffff !important;
+  outline-color: transparent;
+}
+
+.dark .activebtn {
+  background-color: #7a58e7;
+  color: black;
+}

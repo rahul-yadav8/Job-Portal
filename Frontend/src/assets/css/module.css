@@ -1,0 +1,20 @@
+.AccordionItem {
+  border-bottom: 0px solid gainsboro;
+  border-radius: 8px; /* Rounded box always */
+  transition: background-color 0.2s ease;
+}
+
+.AccordionItem:hover {
+  background-color: #F5F6FA; /* light purple (Tailwind: purple-100) */
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  color: #7A58E7;
+}
+.Accordion:hover {
+  background-color: #F5F6FA; /* light purple (Tailwind: purple-100) */
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  color: #7A58E7;
+}

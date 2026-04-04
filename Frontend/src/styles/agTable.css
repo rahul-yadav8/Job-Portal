@@ -1,0 +1,187 @@
+.ag-theme-quartz {
+  --ag-background-color: #fff;
+  --ag-header-background-color: #f9f9f9;
+  --ag-row-border-color: #e1e7ef;
+  --ag-row-border-style: solid;
+  --ag-row-border-width: 0;
+  font-family: 'Satoshi', sans-serif !important;
+}
+
+.dark .ag-theme-quartz {
+  --ag-background-color: black;
+  --ag-header-background-color: #f9f9f9;
+  --ag-row-border-color: white;
+  --ag-row-border-style: solid;
+  --ag-row-border-width: 0;
+}
+
+/* AG Grid header bottom thin line */
+.ag-theme-quartz .ag-header,
+.ag-theme-quartz .ag-header-viewport,
+.ag-theme-quartz .ag-header-row {
+  border-bottom: none !important; /* remove all default lines */
+  box-shadow: none !important; /* remove default shadows */
+  position: relative; /* needed for pseudo-element */
+}
+
+/* Add a thin custom bottom border using a pseudo-element */
+.ag-theme-quartz .ag-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px; /* exact thickness */
+  background-color: #d1d5db; /* your color here */
+}
+
+.ag-theme-quartz .custom-header .ag-header-cell-label {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+}
+
+.ag-theme-quartz .ag-header-cell {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  color: #737373;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+  letter-spacing: -0.28px;
+  font-family: 'Satoshi', sans-serif !important;
+}
+
+.ag-theme-quartz .ag-header {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  overflow: hidden;
+}
+
+.ag-theme-quartz .ag-header-viewport {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  overflow: hidden;
+}
+
+.ag-theme-quartz .ag-header-cell-label {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  gap: 8px;
+}
+
+.ag-theme-quartz .ag-cell {
+  display: flex !important;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 14px;
+  color: #171717;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%;
+  letter-spacing: 0.224px;
+  /* text-transform: capitalize; */
+  font-family: 'Satoshi', sans-serif !important;
+}
+
+.ag-theme-quartz .ag-row.group:hover {
+  background-color: #f9fafb;
+}
+
+.ag-theme-quartz .ag-root-wrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.ag-theme-quartz .ag-row.highlighted {
+  background-color: #fdf8c2 !important;
+  transition: background-color 0.3s;
+}
+.ag-theme-quartz .highlight-overlap {
+  background-color: #ffe5e5 !important;
+}
+.ag-theme-quartz .ag-row.highlight-new {
+  background-color: #dcfce7 !important;
+  transition: background-color 0.3s;
+}
+
+.ag-theme-quartz .ag-header-cell.header-center .ag-header-cell-label {
+  white-space: normal !important;
+  text-align: center !important;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-wrap: wrap;
+  word-break: break-word;
+}
+
+.ag-theme-quartz .ag-header-cell.header-left .ag-header-cell-label {
+  white-space: normal !important;
+  text-align: left !important;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-wrap: wrap;
+  word-break: break-word;
+}
+
+.ag-theme-quartz .ag-header-cell.header-wrap .ag-header-cell-label {
+  white-space: normal !important;
+  text-align: left;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  text-wrap: wrap;
+  word-break: break-word;
+}
+
+.ag-theme-quartz .ag-cell.cell-center {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.rag-table-theme .ag-body-viewport {
+  scrollbar-width: thin;
+  scrollbar-color: #a4a4ad #f1f5f9;
+}
+
+.rag-table-theme .ag-body-viewport::-webkit-scrollbar {
+  width: 6px;
+}
+
+.rag-table-theme .ag-body-viewport::-webkit-scrollbar-thumb {
+  background-color: #a4a4ad;
+  border-radius: 38px;
+}
+
+.rag-table-theme .ag-body-viewport::-webkit-scrollbar-thumb:hover {
+  background-color: #708090;
+}
+
+.rag-table-theme .ag-body-viewport::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.ag-theme-quartz .ag-cell.cell-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.ag-theme-quartz .ag-cell.capitalizeText {
+  text-transform: capitalize;
+}
+
+/* Thin scrollbar  */
+.ag-theme-quartz .ag-body-vertical-scroll-viewport,
+.ag-theme-quartz .ag-body-horizontal-scroll-viewport {
+  scrollbar-width: thin;
+}

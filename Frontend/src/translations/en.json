@@ -1,0 +1,34 @@
+{
+  "sidebar": {
+    "plants": "Plants",
+    "assets": "Assets",
+    "manageUsers": "Manage Users",
+    "organization": "Organization",
+    "orgUsers": "Org Users",
+    "rules": "Rules",
+    "jobs": "Jobs",
+    "predictions": "Predictions",
+    "reports": "Reports & Exports",
+    "auditLogs": "Audit Logs"
+  },
+  "error": {
+    "404_title": "Oops! Page Not Found!",
+    "404_desc": "It seems like the page you're looking for does not exist or might have been removed.",
+    "go_back": "Go Back",
+    "back_to_home": "Back to Home",
+    "500_title": "Oops! Something went wrong.",
+    "500_desc": "We apologize for the inconvenience. Please try again later.",
+    "maintenance_title": "Website is under maintenance!",
+    "maintenance_desc": "The site is not available at the moment. We'll be back online shortly.",
+    "learn_more": "Learn More",
+    "unauthorised_title": "Oops! You don't have permission to access this page.",
+    "unauthorised_desc": "It looks like you tried to access a resource that requires proper authentication. Please log in with the appropriate credentials."
+  },
+  "userNav": {
+    "profile": "Profile",
+    "billing": "Billing",
+    "settings": "Settings",
+    "new_team": "New Team",
+    "log_out": "Log out"
+  }
+}

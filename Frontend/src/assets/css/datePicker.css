@@ -1,0 +1,90 @@
+.react-calendar {
+  font-family: 'Inter' !important;
+  width: 307px !important;
+  max-width: 100%;
+  background: transparent;
+  border: none !important;
+  line-height: 1.125em;
+}
+
+.react-calendar button {
+  width: 36.728px !important;
+  height: 36.728px !important;
+}
+
+.react-calendar__tile--now {
+  background: transparent !important;
+  color: #3b2b1e;
+}
+
+.react-calendar__tile--now :active {
+  background: transparent !important;
+  color: white !important;
+}
+
+.react-calendar__month-view__days__day--weekend,
+abbr:where([title]) {
+  text-decoration: none !important;
+  color: #606060 !important;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 10.494px;
+}
+
+.react-calendar__tile:disabled {
+  background-color: transparent !important;
+  color: #cbd5e1;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 13.773px; /* 114.775% */
+  letter-spacing: -0.21px;
+}
+
+.react-calendar__tile {
+  flex: 0 0 12% !important;
+  width: 32px;
+  height: 32px;
+  /* color: #606060; */
+  text-align: center;
+  font-size: 12px !important;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 13.773px; /* 114.775% */
+  letter-spacing: -0.21px;
+}
+
+.react-calendar__tile--active {
+  background-color: #7a58e7 !important;
+  border-radius: 50% !important;
+  color: white !important;
+}
+
+.react-calendar__tile:hover,
+.react-calendar__tile:focus {
+  background-color: #7a58e7 !important;
+  color: white !important;
+  border-radius: 50% !important;
+}
+
+.react-calendar__navigation__label__labelText {
+  color: #202224;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18.364px;
+  letter-spacing: 0.291px;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus,
+.react-calendar__navigation button:enabled:disabled {
+  background-color: white !important;
+}
+
+.react-calendar__navigation button:disabled {
+  background-color: white !important;
+}
