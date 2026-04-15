@@ -5,7 +5,7 @@ import { getFirstRouteByRole } from '@/utils/roleConfig'
 import { useReducer } from 'react'
 
 const ApiRoutes = {
-  base: `/api/auth`,
+  base: `/api/users`,
 }
 
 export type StateType = {
@@ -29,16 +29,8 @@ const reducer = (
   switch (type) {
     case 'LOGIN':
       const { token, user } = payload
-
-      // ✅ store correct token
       LocalStorage.write('access_token', token)
-
-      // ❌ remove these (not coming from backend)
-      // LocalStorage.write('refresh_token', token.refresh_token)
-      // LocalStorage.write('role_type', token.app_role)
-
       LocalStorage.write('role_type', user.role)
-
       return {
         ...state,
         user,
@@ -69,14 +61,11 @@ export const { useContext: useSession, Provider: SessionProvider } = ContextCont
 
       const user = {
         id: response.id,
-        name: response.name,
+        fullname: response.fullname,
         email: response.email,
         role: response.role,
         avatar: response.avatar,
-        companyName: response.companyName,
-        companyDescription: response.companyDescription,
-        companyLogo: response.companyLogo,
-        resume: response.resume,
+        phone: response.phone,
       }
 
       dispatch({
@@ -108,6 +97,73 @@ export const { useContext: useSession, Provider: SessionProvider } = ContextCont
         variant: 'destructive',
         description: 'The credentials provided are invalid',
       })
+    }
+  }
+
+  const register = async (
+    data: {
+      fullname: string
+      phone: number | string
+      password: string
+      email: string
+      avatar: string
+      role: string
+    },
+    callback?: (data?: any, error?: any) => void
+  ) => {
+    try {
+      const res: any = await APIService.post(
+        `${ApiRoutes.base}/register`,
+        data,
+        import.meta.env.VITE_API_ENDPOINT
+      )
+
+      const response = res.data
+
+      callback?.(response, null)
+
+      toast({
+        title: 'Registration Successful',
+        variant: 'default',
+        description: `${response.fullname} has been Registered successfully.`,
+      })
+
+      return response
+    } catch (error: any) {
+      console.error('API Error:', error)
+
+      callback?.(null, error)
+
+      toast({
+        title: 'Registration Failed',
+        variant: 'destructive',
+        description:
+          error?.response?.data?.message || error?.message || 'An error occurred while registering the user.',
+      })
+
+      throw error
+    }
+  }
+
+  const uploadImage = async (file: File, callback?: (data?: any, error?: any) => void) => {
+    try {
+      const formData = new FormData()
+      formData.append('avatar', file)
+
+      const res: any = await APIService.post(
+        `${ApiRoutes.base}/upload-image`,
+        formData,
+        import.meta.env.VITE_API_ENDPOINT
+      )
+      callback?.(res.data, null)
+
+      return res.data.url
+    } catch (error: any) {
+      console.log('UPLOAD ERROR:', error)
+
+      callback?.(null, error)
+
+      throw error // IMPORTANT so register flow stops
     }
   }
 
@@ -207,54 +263,6 @@ export const { useContext: useSession, Provider: SessionProvider } = ContextCont
       })
   }
 
-  const acceptInvite = (
-    data: {
-      first_name: string
-      last_name: string
-      password: string
-      inviteToken: string
-    },
-    callback?: (data?: any, error?: any) => void
-  ) => {
-    const payload = {
-      first_name: data.first_name.trim().toLowerCase(),
-      last_name: data.last_name.trim().toLowerCase(),
-      password: data.password,
-    }
-
-    APIService.post(
-      `${ApiRoutes.base}/accept-invite/${data.inviteToken}`,
-      payload,
-      import.meta.env.VITE_API_ENDPOINT
-    )
-      .then((res: any) => {
-        // if (res?.status === 204 || !res?.data) {
-        toast({
-          title: 'Invite Accepted',
-          variant: 'default',
-          description: 'Please login to continue.',
-        })
-        callback?.({ message: 'Invite accepted!' }, null)
-        return
-        // }
-        // callback?.(null, { message: 'Unexpected response from server' })
-        // toast({
-        //   title: 'Unexpected Error',
-        //   variant: 'destructive',
-        //   description: 'An unexpected error occurred.',
-        // })
-      })
-      .catch((error: any) => {
-        console.error('API Error:', error)
-        callback?.(null, error)
-        toast({
-          title: 'Accept Invite Failed',
-          variant: 'destructive',
-          description: error?.message || 'An error occurred while accepting the invite.',
-        })
-      })
-  }
-
   return {
     state,
     actions: {
@@ -262,7 +270,8 @@ export const { useContext: useSession, Provider: SessionProvider } = ContextCont
       forgotPassword,
       reset,
       create,
-      acceptInvite,
+      register,
+      uploadImage,
     },
   }
 })

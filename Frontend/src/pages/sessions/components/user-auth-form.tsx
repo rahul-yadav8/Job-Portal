@@ -131,6 +131,16 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           >
             Login
           </Button>
+
+          <Box className='mt-4 text-center text-sm font-normal text-[#09090B]'>
+            Don&apos;t have an account?{' '}
+            <Link
+              to='/register'
+              className='cursor-pointer text-sm font-normal text-[#09090B] underline hover:text-primary'
+            >
+              Sign Up
+            </Link>
+          </Box>
         </form>
       </Form>
     </div>

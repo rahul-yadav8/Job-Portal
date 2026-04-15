@@ -4,13 +4,13 @@ import { stringify } from 'qs'
 import { useReducer } from 'react'
 
 const ApiRoutes = {
-  base: '/api/v1/jobs',
-  create: '/api/v1/jobs',
-  delete: (id: string) => `/api/v1/jobs/${id}`,
-  update: (id: string) => `/api/v1/jobs/${id}`,
+  base: '/api/v1/company',
+  create: '/api/v1/company',
+  delete: (id: string) => `/api/v1/company/${id}`,
+  update: (id: string) => `/api/v1/company/${id}`,
 }
 
-type IManageJob = {
+type IManageCompany = {
   id: string
   title: string
   description: string
@@ -21,13 +21,13 @@ type IManageJob = {
 }
 
 export type StateType = {
-  manageJobList: IManageJob[]
-  selectedJob: IManageJob | null
+  manageCompanyList: IManageCompany[]
+  selectedCompany: IManageCompany | null
 }
 
 const initialState: StateType = {
-  manageJobList: [],
-  selectedJob: null,
+  manageCompanyList: [],
+  selectedCompany: null,
 }
 
 const reducer = (
@@ -40,31 +40,31 @@ const reducer = (
   const { type, payload } = action
 
   switch (type) {
-    case 'GET_MANAGE_JOB_LIST':
+    case 'GET_MANAGE_COMPANY_LIST':
       return {
         ...state,
-        manageJobList: payload?.data || [],
+        manageCompanyList: payload?.data || [],
       }
 
-    case 'ADD_MANAGE_JOB':
+    case 'ADD_MANAGE_COMPANY':
       return {
         ...state,
-        manageJobList: [payload, ...state.manageJobList],
+        manageCompanyList: [payload, ...state.manageCompanyList],
       }
 
-    case 'UPDATE_MANAGE_JOB':
+    case 'UPDATE_MANAGE_COMPANY':
       return {
         ...state,
-        manageJobList: state.manageJobList.map((job) =>
-          job.id === payload.id ? { ...job, ...payload } : job
+        manageCompanyList: state.manageCompanyList.map((company) =>
+          company.id === payload.id ? { ...company, ...payload } : company
         ),
       }
 
-    case 'UPDATE_MANAGE_JOB_STATUS':
+    case 'UPDATE_MANAGE_COMPANY_STATUS':
       return {
         ...state,
-        manageJobList: state.manageJobList.map((job) =>
-          job.id === payload.id ? { ...job, status: payload.status } : job
+        manageCompanyList: state.manageCompanyList.map((company) =>
+          company.id === payload.id ? { ...company, status: payload.status } : company
         ),
       }
 
@@ -73,22 +73,25 @@ const reducer = (
   }
 }
 
-export const { useContext: useManageJob, Provider: ManageJobProvider } = ContextContainer(() => {
+export const { useContext: useCompany, Provider: CompanyProvider } = ContextContainer(() => {
   const { toast } = useToast()
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
   })
 
   // =========================
-  // GET JOBS
+  // GET COMPANIES
   // =========================
-  const getManageJobs = (query: { [key: string]: any } = { query: '' }, callback?: (data: any) => void) => {
+  const getManageCompanies = (
+    query: { [key: string]: any } = { query: '' },
+    callback?: (data: any) => void
+  ) => {
     const queryStr = stringify(query)
 
     APIService.get(`${ApiRoutes.base}?${queryStr}`, undefined, import.meta.env.VITE_API_ENDPOINT)
       .then((res: any) => {
         dispatch({
-          type: 'GET_MANAGE_JOB_LIST',
+          type: 'GET_MANAGE_COMPANY_LIST',
           payload: res,
         })
 
@@ -105,21 +108,21 @@ export const { useContext: useManageJob, Provider: ManageJobProvider } = Context
   }
 
   // =========================
-  // CREATE JOB
+  // CREATE COMPANY
   // =========================
-  const createManageJob = (data: Partial<IManageJob>, callback?: (error: any, data: any) => void) => {
+  const createManageCompany = (data: Partial<IManageCompany>, callback?: (error: any, data: any) => void) => {
     APIService.post(ApiRoutes.create, data, import.meta.env.VITE_API_ENDPOINT)
       .then((res: any) => {
         const response = res.data
 
         dispatch({
-          type: 'ADD_MANAGE_JOB',
+          type: 'ADD_MANAGE_COMPANY',
           payload: response?.data,
         })
 
         toast({
           title: 'Success',
-          description: 'Job created successfully',
+          description: 'Company created successfully',
         })
 
         callback?.(null, response)
@@ -136,11 +139,11 @@ export const { useContext: useManageJob, Provider: ManageJobProvider } = Context
   }
 
   // =========================
-  // UPDATE JOB
+  // UPDATE COMPANY
   // =========================
-  const updateManageJob = (
+  const updateManageCompany = (
     id: string,
-    data: Partial<IManageJob>,
+    data: Partial<IManageCompany>,
     callback?: (data: any) => void
   ): Promise<void> => {
     return APIService.patch(ApiRoutes.update(id), data, import.meta.env.VITE_API_ENDPOINT)
@@ -148,13 +151,13 @@ export const { useContext: useManageJob, Provider: ManageJobProvider } = Context
         const response = res.data
 
         dispatch({
-          type: 'UPDATE_MANAGE_JOB',
+          type: 'UPDATE_MANAGE_COMPANY',
           payload: response?.data,
         })
 
         toast({
           title: 'Success',
-          description: 'Job updated successfully',
+          description: 'Company updated successfully',
         })
 
         callback?.(response)
@@ -172,13 +175,13 @@ export const { useContext: useManageJob, Provider: ManageJobProvider } = Context
   }
 
   // =========================
-  // UPDATE JOB STATUS
+  // UPDATE COMPANY STATUS
   // =========================
-  const updateManageJobStatus = (id: string, data: any, callback?: (error: any, data: any) => void) => {
+  const updateManageCompanyStatus = (id: string, data: any, callback?: (error: any, data: any) => void) => {
     APIService.patch(ApiRoutes.delete(id), data, import.meta.env.VITE_API_ENDPOINT)
       .then((res: any) => {
         dispatch({
-          type: 'UPDATE_MANAGE_JOB_STATUS',
+          type: 'UPDATE_MANAGE_COMPANY_STATUS',
           payload: {
             id,
             status: data.status,
@@ -187,7 +190,8 @@ export const { useContext: useManageJob, Provider: ManageJobProvider } = Context
 
         toast({
           title: 'Success',
-          description: data.status === 'closed' ? 'Job closed successfully' : 'Job opened successfully',
+          description:
+            data.status === 'closed' ? 'Company closed successfully' : 'Company opened successfully',
         })
 
         callback?.(null, res.data)
@@ -206,10 +210,10 @@ export const { useContext: useManageJob, Provider: ManageJobProvider } = Context
   return {
     state,
     actions: {
-      getManageJobs,
-      createManageJob,
-      updateManageJob,
-      updateManageJobStatus,
+      getManageCompanies,
+      createManageCompany,
+      updateManageCompany,
+      updateManageCompanyStatus,
     },
   }
 })

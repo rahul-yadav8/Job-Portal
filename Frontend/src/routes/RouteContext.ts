@@ -11,7 +11,7 @@ export type StateType = {
 }
 
 const ApiRoutes = {
-  base: `/api/auth`,
+  base: `/api/users`,
 }
 
 const initialState: StateType = {
@@ -28,9 +28,8 @@ const reducer = (
   }
 ) => {
   const { type } = action
+
   switch (type) {
-    case 'LOGIN':
-      return { ...state, hasSession: true }
     case 'SET_USER_DETAILS': {
       const { payload } = action
       return { ...state, UserDetails: payload }

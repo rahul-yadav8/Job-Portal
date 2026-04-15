@@ -18,9 +18,10 @@ import Jobs from '@/assets/sidebar/Jobs'
 import DashboardLayout from '@/pages/AdminFlow/dashboard/DashboardLayout'
 import PredictionsLayout from '@/pages/UserFlow/Predictions/PredictionsLayout'
 import Job from '@/pages/Job/Job'
-import ManageJobLayout from '@/pages/ManageJob/ManageJobLayout'
+import ManageJobLayout from '@/pages/Companies/CompaniesLayout'
 import CompanyProfile from '@/pages/CompanyProfile/CompanyProfile'
 import ProfileDetails from '@/pages/profile/ProfileDetail'
+import CompaniesLayout from '@/pages/Companies/CompaniesLayout'
 
 export interface AppRoute {
   title: string
@@ -45,7 +46,7 @@ export const APP_ROUTES: AppRoute[] = [
     placement: 'top',
   },
   {
-    title: 'Post Job',
+    title: 'Jobs',
     path: '/job/*',
     element: <Job />,
     icon: <PlantsIcon color='#333' />,
@@ -56,22 +57,11 @@ export const APP_ROUTES: AppRoute[] = [
   },
 
   {
-    title: 'Manage Job',
-    path: '/manage-job/*',
-    element: <ManageJobLayout />,
+    title: 'Companies',
+    path: '/companies/*',
+    element: <CompaniesLayout />,
     icon: <ManageUsers color='#333' />,
     iconActive: <ManageUsers color='#fff' />,
-    roles: ['employer'],
-    showInSidebar: true,
-    placement: 'top',
-  },
-
-  {
-    title: 'Company Profile',
-    path: '/company-profile/*',
-    element: <CompanyProfile />,
-    icon: <Database color='#333' />,
-    iconActive: <Database color='#fff' />,
     roles: ['employer'],
     showInSidebar: true,
     placement: 'top',

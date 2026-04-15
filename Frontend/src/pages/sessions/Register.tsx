@@ -1,12 +1,12 @@
+import { Box } from '@chakra-ui/react'
 import InviteUserForm from './components/invite-user-form'
 import Logo from '@assets/auth/loginLogo.svg'
 
-export default function InviteUser() {
+export default function Register() {
   return (
-    <>
+    <Box className='h-[600px] overflow-auto'>
       <div className='flex justify-center'>
         <div className='flex h-[56px] w-[56px] items-center gap-2.5 rounded-2xl border border-solid border-white p-4 shadow-[0_8px_14.4px_0_rgba(33,164,229,0.10)] [background:rgba(255,255,255,0.70)]'>
-          {/* <Logout /> */}
           <img src={Logo} alt='Motion Grid Logo' className='h-8 w-8' draggable={false} />
         </div>
       </div>
@@ -17,6 +17,6 @@ export default function InviteUser() {
         <p className='text-sm font-normal text-[#4B5563]'>You’ve been invited to join Motion Grid.</p>
       </div>
       <InviteUserForm />
-    </>
+    </Box>
   )
 }

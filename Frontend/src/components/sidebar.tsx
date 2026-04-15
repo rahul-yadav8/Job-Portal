@@ -32,24 +32,6 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, className }: Side
     actions: { logout },
   } = useAuth()
 
-  // useEffect(() => {
-  //   if (
-  //     UserData &&
-  //     ((UserData.app_role !== LocalStorage.read('role_type') &&
-  //       UserData.app_role !== LocalStorage.read('role_type')) ||
-  //       UserData.user_role !== LocalStorage.read('role_type'))
-  //   ) {
-  //     toast({
-  //       title: 'Suspicious Activity Detected',
-  //       description: `Your role has changed. Please log in again.`,
-  //     })
-  //     setTimeout(() => {
-  //       LocalStorage.clear()
-  //       window.location.replace('/login')
-  //     }, 2000)
-  //   }
-  // }, [UserData])
-
   useEffect(() => {
     document.body.classList.toggle('overflow-hidden', navOpened)
   }, [navOpened])
@@ -62,7 +44,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, className }: Side
     }
   }, [role])
 
-  const initials = UserDetails?.name ? `${UserDetails?.name.charAt(0)}`.toUpperCase() : 'U'
+  const initials = UserDetails?.fullname ? `${UserDetails?.fullname.charAt(0)}`.toUpperCase() : 'U'
 
   return (
     <aside
@@ -76,13 +58,13 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, className }: Side
       {/* LOGO */}
       <div className='relative flex items-center gap-2 p-2 pb-3'>
         <div className='rounded-lg bg-primary p-[10px] shadow-lg'>
-          <img src={Logo} alt='Motion Grid Logo' className='h-7 w-7' draggable={false} />
+          <img src={Logo} alt='Motion Grid Logo' className='h-5 w-5' draggable={false} />
         </div>
 
         {!isCollapsed && (
           <div className='flex flex-col '>
             <h1 className='text-base font-bold text-primary'>Job Portal</h1>
-            <span className='text-[10px] text-muted-foreground'>{getAdminType(role)}</span>
+            <span className='text-[10px] capitalize text-muted-foreground'>{getAdminType(role)}</span>
           </div>
         )}
         <Button
@@ -126,22 +108,24 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, className }: Side
 
         {/* PROFILE */}
         {!navOpened && (
-          <div className={` hidden flex-col md:flex ${isCollapsed ? 'items-center gap-4' : 'mt-2 gap-2'}`}>
+          <div className={` hidden flex-col md:flex ${isCollapsed ? 'items-center gap-4' : ' mt-2 gap-2'}`}>
             {isCollapsed ? (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Avatar className='h-10 w-10'>
-                    <AvatarImage src={`/api/avatar/${UserDetails}`} />
+                    <AvatarImage src={`${UserDetails.avatar}`} />
                     <AvatarFallback className='bg-primary font-bold text-sidebar-primary-foreground'>
                       {initials}
                     </AvatarFallback>
                   </Avatar>
                 </TooltipTrigger>
-                <TooltipContent side='right'>{UserDetails ? `${UserDetails?.name}` : 'User'}</TooltipContent>
+                <TooltipContent side='right'>
+                  {UserDetails ? `${UserDetails?.fullname}` : 'User'}
+                </TooltipContent>
                 <TooltipContent side='right'>{UserDetails?.email}</TooltipContent>
               </Tooltip>
             ) : (
-              <div className='flex flex-col items-center justify-start gap-2 rounded-xl border border-[#E4E4E7] bg-transparent p-[14px]  '>
+              <div className='flex flex-col items-center justify-start gap-2 rounded-xl border border-[#E4E4E7] bg-transparent bg-white p-[14px]'>
                 <div
                   className='flex w-full cursor-pointer items-center justify-start gap-3 px-3.5 py-2 hover:rounded-md hover:bg-secondary-foreground/10'
                   onClick={() => logout(() => {})}
@@ -150,15 +134,15 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, className }: Side
                   Logout
                 </div>
                 <div className='flex w-full cursor-pointer items-center gap-2 rounded-md bg-transparent p-2 hover:rounded-md hover:bg-secondary-foreground/10'>
-                  <Avatar className='h-8 w-8 '>
-                    <AvatarImage src={`/api/avatar/${UserDetails}`} />
+                  <Avatar className='h-8 w-8'>
+                    <AvatarImage src={`${UserDetails.avatar}`} />
                     <AvatarFallback className='bg-[#333] font-bold text-sidebar-primary-foreground'>
                       {initials}
                     </AvatarFallback>
                   </Avatar>
                   <div className='grid w-0 flex-1 overflow-hidden'>
                     <span className='truncate text-sm font-medium capitalize'>
-                      {UserDetails ? `${UserDetails?.name}` : 'User'}
+                      {UserDetails ? `${UserDetails?.fullname}` : 'User'}
                     </span>
                     <span className='truncate text-sm font-normal'>{UserDetails?.email || ''}</span>
                   </div>

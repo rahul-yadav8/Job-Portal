@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { User } from "../models/User.js";
 import { blacklistedTokens } from "../utils/blacklistedTokens.js";
+import { User } from "../models/userModel.js";
 
 export const authMiddleware = async (req, res, next) => {
   try {

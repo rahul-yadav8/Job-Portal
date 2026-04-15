@@ -2,12 +2,14 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import { connectDb } from "./config/db.js";
-import AuthRoutes from "../src/routes/AuthRoutes.js";
 import UserRoutes from "../src/routes/UserRoutes.js";
+import cookieParser from "cookie-parser";
 import cors from "cors";
-
 const app = express();
+
 app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 connectDb();
 
 // Allow your frontend to access backend
@@ -18,11 +20,8 @@ app.use(
   }),
 );
 
-app.use(express.json());
-
 // apis
-app.use("/api/auth", AuthRoutes);
-app.use("/api/user", UserRoutes);
+app.use("/api/users", UserRoutes);
 
 app.listen(process.env.PORT || 3001, () => {
   console.log(`Server is running on port ${process.env.PORT || 3001}`);
