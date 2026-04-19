@@ -3,6 +3,7 @@ dotenv.config();
 import express from "express";
 import { connectDb } from "./config/db.js";
 import UserRoutes from "../src/routes/UserRoutes.js";
+import companyRoutes from "../src/routes/companyRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 const app = express();
@@ -22,6 +23,7 @@ app.use(
 
 // apis
 app.use("/api/users", UserRoutes);
+app.use("/api/company", companyRoutes);
 
 app.listen(process.env.PORT || 3001, () => {
   console.log(`Server is running on port ${process.env.PORT || 3001}`);

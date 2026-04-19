@@ -3,23 +3,36 @@ import mongoose from "mongoose";
 const jobSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    location: {
-      type: String,
-    },
     description: { type: string, required: true },
     requirement: { type: string, required: true },
-    category: {
+    location: {
       type: String,
+      required: true,
     },
-    type: {
+    salary: {
+      type: Number,
+      required: true,
+    },
+    jobType: {
       type: String,
       required: true,
       enum: ["Remote", "Full-Time", "Part-Time", "Internship", "Contract"],
     },
-    company: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    salaryMin: { type: Number },
-    salaryMax: { type: Number },
-    isClosed: { type: Boolean, default: true },
+    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company", required: true },
+    category: {
+      type: String,
+      required: true,
+    },
+    created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    application: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Application",
+      required: null,
+    },
   },
   { timestamps: true },
 );

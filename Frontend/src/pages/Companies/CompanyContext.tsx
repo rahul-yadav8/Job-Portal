@@ -4,20 +4,16 @@ import { stringify } from 'qs'
 import { useReducer } from 'react'
 
 const ApiRoutes = {
-  base: '/api/v1/company',
-  create: '/api/v1/company',
-  delete: (id: string) => `/api/v1/company/${id}`,
-  update: (id: string) => `/api/v1/company/${id}`,
+  base: '/api/company',
+  upload: '/api/users',
 }
 
 type IManageCompany = {
-  id: string
-  title: string
+  companyName: string
   description: string
   location: string
-  salary?: string
-  status: 'open' | 'closed'
-  created_at: string
+  website: string
+  logo: string
 }
 
 export type StateType = {
@@ -40,10 +36,10 @@ const reducer = (
   const { type, payload } = action
 
   switch (type) {
-    case 'GET_MANAGE_COMPANY_LIST':
+    case 'GET_COMPANY_LIST':
       return {
         ...state,
-        manageCompanyList: payload?.data || [],
+        manageCompanyList: payload?.data?.company || [],
       }
 
     case 'ADD_MANAGE_COMPANY':
@@ -55,17 +51,15 @@ const reducer = (
     case 'UPDATE_MANAGE_COMPANY':
       return {
         ...state,
-        manageCompanyList: state.manageCompanyList.map((company) =>
-          company.id === payload.id ? { ...company, ...payload } : company
+        manageCompanyList: state.manageCompanyList.map((company: any) =>
+          company._id === payload._id ? { ...company, ...payload } : company
         ),
       }
 
-    case 'UPDATE_MANAGE_COMPANY_STATUS':
+    case 'DELETE_MANAGE_COMPANY':
       return {
         ...state,
-        manageCompanyList: state.manageCompanyList.map((company) =>
-          company.id === payload.id ? { ...company, status: payload.status } : company
-        ),
+        manageCompanyList: state.manageCompanyList.filter((company: any) => company._id !== payload.id),
       }
 
     default:
@@ -82,16 +76,11 @@ export const { useContext: useCompany, Provider: CompanyProvider } = ContextCont
   // =========================
   // GET COMPANIES
   // =========================
-  const getManageCompanies = (
-    query: { [key: string]: any } = { query: '' },
-    callback?: (data: any) => void
-  ) => {
-    const queryStr = stringify(query)
-
-    APIService.get(`${ApiRoutes.base}?${queryStr}`, undefined, import.meta.env.VITE_API_ENDPOINT)
+  const getCompanies = (callback?: (data: any) => void) => {
+    APIService.get(`${ApiRoutes.base}/list`, undefined, import.meta.env.VITE_API_ENDPOINT)
       .then((res: any) => {
         dispatch({
-          type: 'GET_MANAGE_COMPANY_LIST',
+          type: 'GET_COMPANY_LIST',
           payload: res,
         })
 
@@ -111,7 +100,7 @@ export const { useContext: useCompany, Provider: CompanyProvider } = ContextCont
   // CREATE COMPANY
   // =========================
   const createManageCompany = (data: Partial<IManageCompany>, callback?: (error: any, data: any) => void) => {
-    APIService.post(ApiRoutes.create, data, import.meta.env.VITE_API_ENDPOINT)
+    APIService.post(`${ApiRoutes.base}/create`, data, import.meta.env.VITE_API_ENDPOINT)
       .then((res: any) => {
         const response = res.data
 
@@ -141,18 +130,18 @@ export const { useContext: useCompany, Provider: CompanyProvider } = ContextCont
   // =========================
   // UPDATE COMPANY
   // =========================
-  const updateManageCompany = (
+  const updateCompany = (
     id: string,
     data: Partial<IManageCompany>,
     callback?: (data: any) => void
-  ): Promise<void> => {
-    return APIService.patch(ApiRoutes.update(id), data, import.meta.env.VITE_API_ENDPOINT)
+  ): Promise<any> => {
+    return APIService.put(`${ApiRoutes.base}/${id}`, data, import.meta.env.VITE_API_ENDPOINT)
       .then((res: any) => {
-        const response = res.data
+        const response = res?.data
 
         dispatch({
           type: 'UPDATE_MANAGE_COMPANY',
-          payload: response?.data,
+          payload: response?.data ?? { id, ...data },
         })
 
         toast({
@@ -175,26 +164,25 @@ export const { useContext: useCompany, Provider: CompanyProvider } = ContextCont
   }
 
   // =========================
-  // UPDATE COMPANY STATUS
+  // DELETE COMPANY
   // =========================
-  const updateManageCompanyStatus = (id: string, data: any, callback?: (error: any, data: any) => void) => {
-    APIService.patch(ApiRoutes.delete(id), data, import.meta.env.VITE_API_ENDPOINT)
+  const deleteCompany = (id: string, callback?: (data: any) => void): Promise<any> => {
+    return APIService.delete(`${ApiRoutes.base}/${id}`, undefined, import.meta.env.VITE_API_ENDPOINT)
       .then((res: any) => {
+        const response = res?.data
+
         dispatch({
-          type: 'UPDATE_MANAGE_COMPANY_STATUS',
-          payload: {
-            id,
-            status: data.status,
-          },
+          type: 'DELETE_MANAGE_COMPANY',
+          payload: { id },
         })
 
         toast({
           title: 'Success',
-          description:
-            data.status === 'closed' ? 'Company closed successfully' : 'Company opened successfully',
+          description: 'Company deleted successfully',
         })
 
-        callback?.(null, res.data)
+        callback?.(response)
+        return response
       })
       .catch((error: any) => {
         toast({
@@ -203,17 +191,41 @@ export const { useContext: useCompany, Provider: CompanyProvider } = ContextCont
           description: error?.message,
         })
 
-        callback?.(error, null)
+        throw error
       })
+  }
+
+  // upload logo
+  const uploadImage = async (file: File, callback?: (data?: any, error?: any) => void) => {
+    try {
+      const formData = new FormData()
+      formData.append('avatar', file)
+
+      const res: any = await APIService.post(
+        `${ApiRoutes.upload}/upload-image`,
+        formData,
+        import.meta.env.VITE_API_ENDPOINT
+      )
+      callback?.(res.data, null)
+
+      return res.data.url
+    } catch (error: any) {
+      console.log('UPLOAD ERROR:', error)
+
+      callback?.(null, error)
+
+      throw error // IMPORTANT so register flow stops
+    }
   }
 
   return {
     state,
     actions: {
-      getManageCompanies,
+      getCompanies,
       createManageCompany,
-      updateManageCompany,
-      updateManageCompanyStatus,
+      updateCompany,
+      uploadImage,
+      deleteCompany,
     },
   }
 })
